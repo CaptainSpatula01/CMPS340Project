@@ -2,12 +2,28 @@
 """
 Created on Wed Nov 13 16:14:04 2024
 
-@author: Davidson Rock, Fiyinfoluwa Osifala, Bryce Norris
+@authors: Davidson Rock, Fiyinfoluwa Osifala, Bryce Norris
 """
 
 '''
-Unless otherwise required, use the following guidelines:
-* Style, Performance, and Safety (see full standards in module_tmp.py)
+Unless otherwise required, use the following guidelines
+* Style:
+    - Write the code in aesthetically-pleasing style
+    - Names should be self-explanatory
+    - Comment adequately.
+    - Use relative path
+    - Use generic coding instead of manually-entered constant values
+    - Legends should be good enough in color, linestyle, shape etc. to distinguish data series.
+    - Always test your code with an artificial data whose return value is known.
+    - Sort imports alphabetically.
+ 
+* Performance and Safety:
+    - Avoid global variables; if needed, add suffix "_gl".
+    - Code must be efficient.
+    - Avoid if-blocks, declarations, and initializations in loops unless required.
+    - Save data in categorized folders.
+    - import only needed components from packages/modules.
+
 '''
 
 #%% MODULE BEGINS
@@ -17,49 +33,45 @@ module_name = '<Person>'
 Version: <0.1>
 
 Description:
-    <Basic person class and employee subclass with data handling functionality>
+    Basic person and employee classes with data input format and functionality to read data from a file.
 
 Authors:
     Davidson Rock, Fiyinfoluwa Osifala, Bryce Norris
 
 Date Created     :  November 12th, 2024
 Date Last Updated:  November 13th, 2024
+
+Doc:
+    <***>
+
+Notes:
+    <***>
 '''
 
-#%% IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from copy import deepcopy as dpcpy
-from datetime import date
 import pandas as pd
-import os
+import datetime
 
-#%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-DEFAULT_CSV_PATH = os.path.join("data", "persons_data.csv")
+#%% DATA INPUT SPECIFICATION    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Expected input format for person data in CSV format:
+# Columns:
+# - First Name (str): The first name of the person.
+# - Last Name (str): The last name of the person.
+# - Date of Birth (str in YYYY-MM-DD format): The date of birth of the person.
+# - Job (str, optional): The job title of the person, applicable for Employee objects.
 
-#%% CLASS DEFINITIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#%% CLASS DEFINITIONS          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class Person:
-    """A class to represent a person with basic attributes."""
-
-    def __init__(self, fname: str, lname: str, dob: date):
-        """
-        Initializes a new person instance.
-
-        Args:
-            fname (str): First name of the person.
-            lname (str): Last name of the person.
-            dob (date): Date of birth of the person.
-        """
+    def __init__(self, fname, lname, dob):
         self.first_name = fname
         self.last_name = lname
-        self.date_of_birth = dob  # Set date of birth with type date.
+        self.date_of_birth = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
 
-    def to_dict(self) -> dict:
-        """
-        Returns the person's data in dictionary format.
-        
-        Returns:
-            dict: A dictionary containing the person's details.
-        """
+    def to_dict(self):  # Stores the contents of person to a dictionary and returns it
         return {
             "First Name": self.first_name,
             "Last Name": self.last_name,
@@ -68,75 +80,47 @@ class Person:
 
 
 class Employee(Person):
-    """A subclass of Person to represent an employee with job details."""
-
-    def __init__(self, fname: str, lname: str, dob: date, job: str, employee_id: int):
-        """
-        Initializes a new employee instance.
-
-        Args:
-            fname (str): First name of the employee.
-            lname (str): Last name of the employee.
-            dob (date): Date of birth of the employee.
-            job (str): Job title of the employee.
-            employee_id (int): Unique ID of the employee.
-        """
+    def __init__(self, fname, lname, dob, job):
         super().__init__(fname, lname, dob)
         self.job = job
-        self.employee_id = employee_id
 
     @staticmethod
-    def read_file(file_path: str = DEFAULT_CSV_PATH) -> pd.DataFrame:
+    def read_file(file_path):
         """
-        Reads input file (CSV) and stores data in a DataFrame.
+        Reads a CSV file and returns a list of Employee objects.
 
-        Args:
-            file_path (str): Path to the CSV file. Defaults to DEFAULT_CSV_PATH.
+        Parameters:
+            file_path (str): The path to the CSV file containing employee data.
 
         Returns:
-            pd.DataFrame: A DataFrame containing the file's data.
+            employees (list): A list of Employee instances.
         """
-        try:
-            data_df = pd.read_csv(file_path)
-            print("Data loaded successfully from CSV.")
-            return data_df
-        except FileNotFoundError:
-            print(f"File not found at path: {file_path}")
-            return pd.DataFrame()
+        data = pd.read_csv(file_path)
+        employees = []
 
-#%% FUNCTION DEFINITIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        for _, row in data.iterrows():
+            employee = Employee(
+                fname=row['First Name'],
+                lname=row['Last Name'],
+                dob=row['Date of Birth'],
+                job=row['Job'] if 'Job' in row else None
+            )
+            employees.append(employee)
 
-def plot_dob(data_df: pd.DataFrame):
-    """
-    Plots the date of birth distribution for all persons in the DataFrame.
+        return employees
 
-    Args:
-        data_df (pd.DataFrame): DataFrame containing person data.
-    """
-    if 'Date of Birth' not in data_df.columns:
-        print("Error: Date of Birth column not found in DataFrame.")
-        return
-    
-    # Convert to datetime if not already
-    data_df['Date of Birth'] = pd.to_datetime(data_df['Date of Birth'], errors='coerce')
-    
-    # Plot the histogram
-    data_df['Date of Birth'].dt.year.plot(kind='hist', title="Birth Year Distribution")
-    plt.xlabel("Year of Birth")
-    plt.ylabel("Frequency")
-    plt.show()
+#%% FUNCTION DEFINITIONS       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def main():
-    # Example usage:
-    sample_employee = Employee("Alice", "Smith", date(1990, 5, 21), "Engineer", 101)
-    print(sample_employee.to_dict())
+    # Example usage of read_file function
+    file_path = './data/person_data.csv'  
+    employees = Employee.read_file(file_path)
+    for emp in employees:
+        print(emp.to_dict())
 
-    # Load and plot data from CSV
-    df_persons = Employee.read_file()
-    if not df_persons.empty:
-        plot_dob(df_persons)
 
-#%% SELF-RUN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#%% MAIN CODE                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
     print(f"\"{module_name}\" module begins.")
     main()
+
