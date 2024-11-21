@@ -12,7 +12,7 @@ Version: v0.1
 Description:
 Entry point for testing the Person-Employee system. It integrates configuration and class modules.
 Authors:
-<Your Name>
+Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
 Date Created: 11-20-2024
 Date Last Updated: 11-20-2024
 Doc:
