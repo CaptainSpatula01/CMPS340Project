@@ -12,7 +12,7 @@ Version: v0.1
 Description:
 Contains configuration constants and shared settings for the Person-Employee system.
 Authors:
-<Your Name>
+Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
 Date Created: 11-20-2024
 Date Last Updated: 11-20-2024
 Doc:
