@@ -79,14 +79,14 @@ if __name__ == "__main__":
 #other imports
 from   copy       import deepcopy as dpcpy
 
-'''
+
 from   matplotlib import pyplot as plt
 import mne
 import numpy  as np 
 import os
 import pandas as pd
 import seaborn as sns
-'''
+
 #%% USER INTERFACE              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -112,7 +112,12 @@ import seaborn as sns
 
 #Function definitions Start Here
 def main():
-    pass
+    this_file = pd.read_csv('your_file.csv')
+    for index, row in this_file.iterrows():
+        person = Person(row['first_name'], row['last_name'], row['date_of_birth'])
+        people.append(person)
+    for person in people:
+        print(person)
 #
 
 #%% MAIN CODE                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
