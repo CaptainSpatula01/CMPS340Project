@@ -1,118 +1,143 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 13 16:14:04 2024
-
-@authors: Davidson Rock, Fiyinfoluwa Osifala, Bryce Norris
-"""
-
+#Version: v0.1
+#Date Last Updated: 11-20-2024
+#%% STANDARDS - DO NOT include this block in a new module
 '''
-Unless otherwise required, use the following guidelines
-* Style:
-    - Write the code in aesthetically-pleasing style
-    - Names should be self-explanatory
-    - Comment adequately.
-    - Use relative path
-    - Use generic coding instead of manually-entered constant values
-    - Legends should be good enough in color, linestyle, shape etc. to distinguish data series.
-    - Always test your code with an artificial data whose return value is known.
-    - Sort imports alphabetically.
- 
-* Performance and Safety:
-    - Avoid global variables; if needed, add suffix "_gl".
-    - Code must be efficient.
-    - Avoid if-blocks, declarations, and initializations in loops unless required.
-    - Save data in categorized folders.
-    - import only needed components from packages/modules.
-
+Refer to the provided standards for code style, performance, and safety.
 '''
 
 #%% MODULE BEGINS
-module_name = '<PersonEmp>'
-
+module_name = 'parent_child_classes'
 '''
-Version: <0.2>
-
+Version: v0.1
 Description:
-    Basic person and employee classes with data input format and functionality to read data from a file.
-
+Defines Person (Parent) and Employee (Child) classes with basic attributes and file integration.
 Authors:
-    Davidson Rock, Fiyinfoluwa Osifala, Bryce Norris
-
-Date Created     :  November 12th, 2024
-Date Last Updated:  November 13th, 2024
-
+Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
+Date Created: 11-20-2024
+Date Last Updated: 11-20-2024
 Doc:
-    <***>
-
+This module contains two classes, Person and Employee, and their associated
+methods for CSV file handling and data manipulation.
 Notes:
-    <***>
+The module follows the provided standard template.
 '''
 
-#%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#%% IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from copy import deepcopy as dpcpy
+import datetime as dt
 import pandas as pd
-import datetime
 
-#%% DATA INPUT SPECIFICATION    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Expected input format for person data in CSV format:
-# Columns:
-# - First Name (str): The first name of the person.
-# - Last Name (str): The last name of the person.
-# - Date of Birth (str in YYYY-MM-DD format): The date of birth of the person.
-# - Job (str, optional): The job title of the person, applicable for Employee objects.
+#%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# No user interface components for this module.
 
+#%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DATE_FORMAT = "%Y-%m-%d"  # Define date format constant
+FILE_PATH = "your_file.csv"  # Define the file to be read
 
+#%% CONFIGURATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Configuration settings are implemented as constants for reusability.
 
-#%% CLASS DEFINITIONS          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#%% INITIALIZATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Initialize reusable variables or data structures if needed.
 
+#%% DECLARATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Global declarations Start Here
+# Class definitions Start Here
 class Person:
+    '''
+    Parent class to represent a Person with basic attributes.
+    '''
+
     def __init__(self, fname, lname, dob):
+        '''
+        Initialize a Person object.
+        '''
         self.first_name = fname
         self.last_name = lname
-        self.date_of_birth = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
+        self.date_of_birth = dt.datetime.strptime(dob, DATE_FORMAT).date()
+
+    def to_dict(self):
+        '''
+        Convert Person object attributes to a dictionary.
+        '''
+        return {
+            "First Name": self.first_name,
+            "Last Name": self.last_name,
+            "Date of Birth": self.date_of_birth.strftime(DATE_FORMAT)
+        }
+
+    @staticmethod
+    def read_file():
+        '''
+        Read the CSV file (your_file.csv) and return a list of Person objects.
+        '''
+        data = pd.read_csv(FILE_PATH)
+        people = [Person(row['First Name'], row['Last Name'], row['Date of Birth']) for _, row in data.iterrows()]
+        return people
+
+    def __str__(self):
+        '''
+        String representation of a Person object.
+        '''
+        return f"{self.first_name} {self.last_name}, DOB: {self.date_of_birth}"
 
 
 class Employee(Person):
-    def __init__(self, fname, lname, dob, job):
+    '''
+    Child class inheriting from Person. No additional attributes added.
+    '''
+
+    def __init__(self, fname, lname, dob):
+        '''
+        Initialize an Employee object.
+        '''
         super().__init__(fname, lname, dob)
-        self.job = job
 
     @staticmethod
-    def read_file(file_path):
-        """
-        Reads a CSV file and returns a list of Employee objects.
-
-        Parameters:
-            file_path (str): The path to the CSV file containing employee data.
-
-        Returns:
-            employees (list): A list of Employee instances.
-        """
-        data = pd.read_csv(file_path)
-        employees = []
-
-        for _, row in data.iterrows():
-            employee = Employee(
-                fname=row['First Name'],
-                lname=row['Last Name'],
-                dob=row['Date of Birth'],
-                job=row['Job'] if 'Job' in row else None
+    def read_file():
+        '''
+        Read the CSV file (your_file.csv) and return a list of Employee objects.
+        '''
+        data = pd.read_csv(FILE_PATH)
+        employees = [
+            Employee(
+                row['First Name'],
+                row['Last Name'],
+                row['Date of Birth']
             )
-            employees.append(employee)
-
+            for _, row in data.iterrows()
+        ]
         return employees
 
-#%% FUNCTION DEFINITIONS       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    def __str__(self):
+        '''
+        String representation of an Employee object.
+        '''
+        return super().__str__()
 
+# Function definitions Start Here
 def main():
-    # Example usage of read_file function
-    file_path = './data/person_data.csv'  
-    employees = Employee.read_file(file_path)
-    for emp in employees:
-        print(emp.to_dict())
+    '''
+    Main function to test Person and Employee classes.
+    '''
+    # Test Person class
+    print("List of People:")
+    people = Person.read_file()
+    for person in people:
+        print(person.to_dict())
 
+    # Test Employee class
+    print("\nList of Employees:")
+    employees = Employee.read_file()
+    for employee in employees:
+        print(employee.to_dict())
 
-#%% MAIN CODE                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#%% MAIN CODE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Main code starts here
+# Testing is contained in the main function.
+
+#%% SELF-RUN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Main Self-run block
 if __name__ == "__main__":
     print(f"\"{module_name}\" module begins.")
     main()
