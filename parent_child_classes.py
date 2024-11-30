@@ -1,9 +1,7 @@
 #Version: v0.1
 #Date Last Updated: 11-20-2024
 #%% STANDARDS - DO NOT include this block in a new module
-'''
-Refer to the provided standards for code style, performance, and safety.
-'''
+
 
 #%% MODULE BEGINS
 module_name = 'parent_child_classes'
