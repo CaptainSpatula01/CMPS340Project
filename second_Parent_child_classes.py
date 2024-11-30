@@ -121,20 +121,4 @@ class ElectronicDevice(Product):
 if __name__ == "__main__":
     print(f"\"{module_name}\" module begins.")
 
-    # Test Product class
-    print("\nList of Products:")
-    try:
-        products = Product.read_file()
-        for product in products:
-            print(product.to_dict())
-    except Exception as e:
-        print(f"Error reading Products: {e}")
 
-    # Test ElectronicDevice class
-    print("\nList of Electronic Devices:")
-    try:
-        devices = ElectronicDevice.read_file()
-        for device in devices:
-            print(device.to_dict())
-    except Exception as e:
-        print(f"Error reading Electronic Devices: {e}")
