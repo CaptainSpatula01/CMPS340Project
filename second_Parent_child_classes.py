@@ -1,5 +1,5 @@
 #Version: v0.1
-#Date Last Updated: 11-20-2024
+#Date Last Updated: 11-30-2024
 #%% STANDARDS - DO NOT include this block in a new module
 
 
@@ -11,8 +11,8 @@ Description:
 Defines Product (Parent) and ElectronicDevice (Child) classes with basic attributes and file integration.
 Authors:
 Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
-Date Created: 11-20-2024
-Date Last Updated: 11-20-2024
+Date Created: 11-30-2024
+Date Last Updated: 11-30-2024
 Doc:
 This module contains two classes, Product and ElectronicDevice, and their associated
 methods for CSV file handling and data manipulation.
