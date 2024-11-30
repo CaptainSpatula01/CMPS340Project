@@ -1,5 +1,5 @@
 #Version: v0.1
-#Date Last Updated: 11-20-2024
+#Date Last Updated: 11-30-2024
 #%% STANDARDS - DO NOT include this block in a new module
 '''
 Refer to the provided standards for code style, performance, and safety.
@@ -14,7 +14,7 @@ Entry point for testing the Person-Employee system. It integrates configuration 
 Authors:
 Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
 Date Created: 11-20-2024
-Date Last Updated: 11-20-2024
+Date Last Updated: 11-30-2024
 Doc:
 Tests the functionality of Person and Employee classes and verifies the integration with config settings.
 Notes:
@@ -40,7 +40,7 @@ def main():
     print(f"Using File Path: {FILE_PATH}")
     print(f"Using Date Format: {DATE_FORMAT}")
 
-    # Test Person class
+     # Test Person class
     print("\nList of People:")
     try:
         people = Person.read_file()
@@ -57,6 +57,24 @@ def main():
             print(employee.to_dict())
     except Exception as e:
         print(f"Error reading Employees: {e}")
+
+    # Test Product class
+    print("\nList of Products:")
+    try:
+        products = Product.read_file()
+        for product in products:
+            print(product.to_dict())
+    except Exception as e:
+        print(f"Error reading Products: {e}")
+
+    # Test ElectronicDevice class
+    print("\nList of Electronic Devices:")
+    try:
+        devices = ElectronicDevice.read_file()
+        for device in devices:
+            print(device.to_dict())
+    except Exception as e:
+        print(f"Error reading Electronic Devices: {e}")
 
 #%% MAIN CODE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #%% SELF-RUN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
