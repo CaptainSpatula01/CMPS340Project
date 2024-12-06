@@ -122,6 +122,10 @@ def to_dict(self, *args):  # Stores the contents of person to a dictionary and r
     dict = {index: arg for index, arg in enumerate(args)}
     return dict
 
+def make_dataframe(self, data): # Creates a dataframe from input data, takes dictionary as arg
+    df = pd.DataFrame(data)
+    return df
+
 def read_file(self):
     return
 
