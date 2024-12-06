@@ -126,6 +126,30 @@ def make_dataframe(self, data): # Creates a dataframe from input data, takes dic
     df = pd.DataFrame(data)
     return df
 
+def plot_histogram(self, df):
+    df.plot(x='x', y='y', kind='hist')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.show()
+
+def plot_violin(self, df):
+    df.plot(x='x', y='y', kind='violinplot')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.show()
+
+def plot_boxwhisker(self, df):
+    df.plot(x='x', y='y', kind='boxplot')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.show()
+
+def plot_scatter(self, df):
+    df.plot(x='x', y='y', kind='scatter')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.show()
+
 def read_file(self):
     return
 
