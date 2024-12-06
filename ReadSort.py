@@ -118,12 +118,9 @@ def main():
     pass
 #
 
-def to_dict(self):  # Stores the contents of person to a dictionary and returns it
-    return {
-        "First Name": self.first_name,
-        "Last Name": self.last_name,
-        "Date of Birth": self.date_of_birth
-    }
+def to_dict(self, *args):  # Stores the contents of person to a dictionary and returns it
+    dict = {index: arg for index, arg in enumerate(args)}
+    return dict
 
 def read_file(self):
     return
