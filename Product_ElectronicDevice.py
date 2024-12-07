@@ -1,20 +1,20 @@
-#Version: v0.3
-#Date Last Updated: 12-06-2024
+# Version: v0.4
+# Date Last Updated: 12-07-2024
+
 #%% MODULE BEGINS
 module_name = 'Product_ElectronicDevice'
 '''
-Version: v0.3
+Version: v0.4
 Description:
 Defines Product (Parent) and ElectronicDevice (Child) classes with basic attributes and file integration, and integrates visualization functions from visualizations.py.
 Authors:
 Bryce Norris , Fiyinfoluwa Osifala , Davidson Rock
 Date Created: 11-30-2024
-Date Last Updated: 12-06-2024
+Date Last Updated: 12-07-2024
 Doc:
 This module contains two classes, Product and ElectronicDevice, and their associated
-methods for CSV file handling and data manipulation.
+methods for CSV file handling, data manipulation, and advanced operations.
 '''
-
 
 #%% IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import numpy as np
@@ -22,11 +22,13 @@ from copy import deepcopy as dpcpy
 import datetime as dt
 import pandas as pd
 import os
-from visualizations import plot_price_histogram, plot_scatter_manufactured_date  # Import visualization functions
+import pickle
+from itertools import permutations, combinations
+from visualizations import plot_price_histogram, plot_scatter_manufactured_date
 
 #%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DATE_FORMAT = "%Y-%m-%d"  # Define date format constant
-__FILE_PATH = "product_file.csv"  # Define the file to be read
+FILE_PATH = "product_file.csv"  # Define the file to be read
 
 #%% CLASS DEFINITIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -133,12 +135,14 @@ class Product:
         '''
         Check if two vectors are orthogonal.
         '''
-        return np.dot(vec1, vec2) == 0
+        return np.isclose(np.dot(vec1, vec2), 0)
 
 
 class ElectronicDevice(Product):
     '''
     Child class inheriting from Product, representing electronic devices.
+    Includes additional functionality for data manipulation, probability calculations,
+    vector operations, and categorical attribute analysis.
     '''
 
     def __init__(self, name, price, manufactured_date):
@@ -147,37 +151,86 @@ class ElectronicDevice(Product):
         '''
         super().__init__(name, price, manufactured_date)
 
-#%% MAIN CODE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Main code starts here for testing. Can be moved to a separate script for testing.
+    @classmethod
+    def read_pickle_file(cls, file_path):
+        '''
+        Read data from a pickle file and return a list of ElectronicDevice objects.
+        '''
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError(f"Pickle file not found: {file_path}")
+        with open(file_path, 'rb') as file:
+            data = pickle.load(file)
+        return [cls(**item) for item in data]
 
-if __name__ == "__main__":
-    print(f"\"{module_name}\" module begins.")
-    
-    # Test Product class
-    try:
-        products = Product.read_file()
-        for product in products:
-            print(product.to_dict())
-    except Exception as e:
-        print(f"Error reading Products: {e}")
+    @staticmethod
+    def calculate_probabilities(data, attr1, attr2=None):
+        '''
+        Calculate and display joint counts, joint probabilities, and conditional probabilities.
+        '''
+        if attr2:
+            joint_counts = pd.crosstab(data[attr1], data[attr2])
+            joint_probabilities = joint_counts / joint_counts.sum().sum()
+            conditional_probabilities = joint_counts.div(joint_counts.sum(axis=1), axis=0)
+            return joint_counts, joint_probabilities, conditional_probabilities
+        else:
+            value_counts = data[attr1].value_counts()
+            probabilities = value_counts / value_counts.sum()
+            return value_counts, probabilities
 
-    # Test Visualization
-    try:
-        product_data = pd.read_csv(FILE_PATH)
-        product = Product('', 0, '')  # Creating a dummy Product to use its methods
-        plot_price_histogram(product_data)  # Call the imported visualization function
-        plot_scatter_manufactured_date(product_data)  # Call the imported visualization function
-    except Exception as e:
-        print(f"Error during visualization tests: {e}")
+    @staticmethod
+    def calculate_statistics(data, numeric_attr):
+        '''
+        Calculate mean, median, and standard deviation for a numeric attribute.
+        '''
+        mean = data[numeric_attr].mean()
+        median = data[numeric_attr].median()
+        std = data[numeric_attr].std()
+        return mean, median, std
 
-    # Test Statistical Methods
-    print(f"Mean Price: ${Product.mean_price():.2f}")
-    print(f"Median Price: ${Product.median_price():.2f}")
-    print(f"Standard Deviation of Price: ${Product.std_price():.2f}")
+    @staticmethod
+    def vector_operations(vec1, vec2):
+        '''
+        Perform various vector operations:
+        - Position vector
+        - Unit vector
+        - Projection vector
+        - Dot product
+        - Angle between vectors
+        - Orthogonality check
+        '''
+        position_vector = np.array(vec1)
+        unit_vector = position_vector / np.linalg.norm(position_vector)
+        projection_vector = np.dot(position_vector, vec2) / np.linalg.norm(vec2)**2 * np.array(vec2)
+        dot_product = np.dot(position_vector, vec2)
+        angle = np.arccos(dot_product / (np.linalg.norm(vec1) * np.linalg.norm(vec2)))
+        is_orthogonal = np.isclose(dot_product, 0)
+        return {
+            "Position Vector": position_vector,
+            "Unit Vector": unit_vector,
+            "Projection Vector": projection_vector,
+            "Dot Product": dot_product,
+            "Angle (radians)": angle,
+            "Orthogonal": is_orthogonal
+        }
 
-    # Test Vector Operations
-    vec1 = [1, 2, 3]
-    vec2 = [4, 5, 6]
-    print(f"Dot Product: {Product.dot_product(vec1, vec2)}")
-    print(f"Angle Between Vectors: {Product.angle_between_vectors(vec1, vec2)} radians")
-    print(f"Are vectors orthogonal? {'Yes' if Product.check_orthogonality(vec1, vec2) else 'No'}")
+    @staticmethod
+    def categorical_analysis(data, categorical_attr):
+        '''
+        Perform operations on a categorical attribute:
+        - Obtain unique values
+        - Generate permutations
+        - Generate combinations
+        '''
+        unique_values = data[categorical_attr].unique()
+        perms = list(permutations(unique_values, 2))
+        combs = list(combinations(unique_values, 2))
+        return unique_values, perms, combs
+
+    @staticmethod
+    def export_data(data, file_name):
+        '''
+        Export data (e.g., probabilities, vectors) to a CSV file.
+        '''
+        df = pd.DataFrame(data)
+        df.to_csv(file_name, index=False)
+        print(f"Data exported successfully to {file_name}")
