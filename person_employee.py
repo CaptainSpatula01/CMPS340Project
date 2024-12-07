@@ -24,6 +24,7 @@ The module follows the provided standard template.
 from copy import deepcopy as dpcpy
 import datetime as dt
 import pandas as pd
+from visualizations import plot_histogram, plot_line
 
 #%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # No user interface components for this module.
@@ -78,6 +79,14 @@ class Person:
         String representation of a Person object.
         '''
         return f"{self.first_name} {self.last_name}, DOB: {self.date_of_birth}"
+    
+    def plot_data(self, df, column, plot_type):
+        if plot_type == "hist":
+            plot_histogram(df, column)
+        elif plot_type == "line":
+            plot_line(df, column)
+        else:
+            raise ValueError("Unsupported plot type.")
 
 
 class Employee(Person):
