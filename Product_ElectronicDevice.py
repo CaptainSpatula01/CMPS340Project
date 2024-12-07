@@ -26,7 +26,7 @@ from visualizations import plot_price_histogram, plot_scatter_manufactured_date 
 
 #%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DATE_FORMAT = "%Y-%m-%d"  # Define date format constant
-FILE_PATH = "product_file.csv"  # Define the file to be read
+__FILE_PATH = "product_file.csv"  # Define the file to be read
 
 #%% CLASS DEFINITIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
