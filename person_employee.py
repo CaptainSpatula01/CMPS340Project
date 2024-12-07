@@ -4,7 +4,7 @@
 
 
 #%% MODULE BEGINS
-module_name = 'parent_child_classes'
+module_name = 'person_employee'
 '''
 Version: v0.1
 Description:
