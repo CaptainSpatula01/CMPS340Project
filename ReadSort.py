@@ -122,29 +122,25 @@ def to_dict(self, *args):  # Stores the contents of person to a dictionary and r
     dict = {index: arg for index, arg in enumerate(args)}
     return dict
 
-def make_dataframe(self, data): # Creates a dataframe from input data, takes dictionary as arg
-    df = pd.DataFrame(data)
-    return df
-
-def plot_histogram(self, df):
+def plot_histogram(df):
     df.plot(x='x', y='y', kind='hist')
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
     plt.show()
 
-def plot_violin(self, df):
+def plot_violin(df):
     df.plot(x='x', y='y', kind='violinplot')
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
     plt.show()
 
-def plot_boxwhisker(self, df):
+def plot_boxwhisker(df):
     df.plot(x='x', y='y', kind='boxplot')
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
     plt.show()
 
-def plot_scatter(self, df):
+def plot_scatter(df):
     df.plot(x='x', y='y', kind='scatter')
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
