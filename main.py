@@ -21,8 +21,8 @@ Ensure the `your_file.csv` file exists in the project directory.
 
 #%% IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import Config
-from first_parent_child_classes import Person, Employee
-from second_Parent_child_classes import Product, ElectronicDevice
+from person_employee import Person, Employee
+from Product_ElectronicDevice import Product, ElectronicDevice
 
 #%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
