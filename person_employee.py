@@ -25,15 +25,10 @@ import datetime as dt
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from config import CONFIG  # Importing the config file
 
 #%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # No user interface components for this module.
-
-#%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-CONFIG = {
-    "DATE_FORMAT": "%Y-%m-%d",
-    "FILE_PATH": "your_file.csv"
-}
 
 #%% DECLARATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Person:
@@ -193,8 +188,8 @@ def main():
 
     # Test Visualizations
     print("\nVisualizing data:")
-    Person.plot_histogram('First Name')  # Replace 'First Name' with a numeric column
-    Employee.plot_violin('First Name')  # Replace 'First Name' with a numeric column
+    Person.plot_histogram('Age')  # Replace 'First Name' with a numeric column
+    Employee.plot_violin('Salary')  # Replace 'First Name' with a numeric column
 
 
 #%% MAIN CODE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
