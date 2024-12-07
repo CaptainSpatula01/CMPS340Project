@@ -24,7 +24,7 @@ import logging
 
 #%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-__DATE_FORMAT = "%Y-%m-%d"  # Define date format constant
+DATE_FORMAT = "%Y-%m-%d"  # Define date format constant
 FILE_PATH = "your_file.csv"  # Define the file path for the CSV file
 
 #%% CONFIGURATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
