@@ -1,9 +1,7 @@
 #Version: v0.1
 #Date Last Updated: 11-30-2024
 #%% STANDARDS - DO NOT include this block in a new module
-'''
-Refer to the provided standards for code style, performance, and safety.
-'''
+
 
 #%% MODULE BEGINS
 module_name = 'main'
@@ -22,13 +20,14 @@ Ensure the `your_file.csv` file exists in the project directory.
 '''
 
 #%% IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import config
-from parent_child_classes import Person, Employee
+import Config
+from first_parent_child_classes import Person, Employee
+from second_Parent_child_classes import Product, ElectronicDevice
 
 #%% USER INTERFACE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #%% CONSTANTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-FILE_PATH = config.get_file_path()
-DATE_FORMAT = config.get_date_format()
+FILE_PATH = Config.get_file_path()
+DATE_FORMAT = Config.get_date_format()
 
 #%% CONFIGURATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #%% INITIALIZATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
