@@ -188,10 +188,8 @@ def main():
 
     # Test Visualizations
     print("\nVisualizing data:")
-    Person.plot_histogram('Age')  # Replace 'First Name' with a numeric column
-    Employee.plot_violin('Salary')  # Replace 'First Name' with a numeric column
-
-
+    Person.plot_histogram('Age')  
+    Employee.plot_violin('Salary') 
 #%% MAIN CODE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Main code starts here
 # Testing is contained in the main function.
